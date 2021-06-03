@@ -3,6 +3,11 @@
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
+.header {
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
 body {
     justify-content: center;
@@ -36,7 +41,7 @@ body {
     outline: none;
 }
 
-.start-btn {
+.start-btn, .score-btn {
     font-size: larger;
     font-weight: bold;
 }
