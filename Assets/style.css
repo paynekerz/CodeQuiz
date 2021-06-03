@@ -1,0 +1,52 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+
+body {
+    justify-content: center;
+    align-items: center;
+    display:flex;
+    width: 100vw;
+    height: 90vh;
+    padding: 0;
+    margin: 0;
+}
+
+.questions {
+    font-size: x-large;
+    font-weight: bold;
+}
+
+/*styling for the list of buttons*/
+.li-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 10px;
+}
+
+/*styling for the buttons*/
+.btn {
+    background-color: #301934;
+    color: white;
+    padding: 5px 10px;
+    outline: none;
+}
+
+.start-btn {
+    font-size: larger;
+    font-weight: bold;
+}
+
+.control {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hidden {
+    display: none;
+}
