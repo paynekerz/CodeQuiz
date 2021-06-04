@@ -53,55 +53,50 @@ function nextQuestion() {
 function displayQuestion(questions) {
     //pulls questions from the array
     questionEl.innerText = questions.question
-    //fuck this bullshit
-    questions.answer.forEach(answer => {
-        const btn = document.createElement("button")
-        btn.innerText = answer.text
-        btn.classList.add("btn")
-        if (answer.correct) {
-            btn.dataset.correct = answer.correct
-        }
-        btn.addEventListener("click", chosenAnswer)
-        answerBtnEl.appendChild(btn)
-    })
+    
+
 }
 
 //array for the questions 
 const questions = [
     {
         question: "Inside which HTML element do we put the JavaScript?",
-        answer: [
-            {text: "a) <javascript>",correct: false},
-            {text: "b) <js>",correct: false},
-            {text: "c) <script>", correct: true},
-            {text: "d) <scripting>",correct: false},
-        ]
+        answer: {
+            a: "<javascript>",
+            b: "<js>",
+            c: "<script>",
+            d: "<scripting>"
+        },
+        correctAnswer: "c"
+    },
+    {
+        question: "What is the correct JavaScript syntax to write 'Hello World'?",
+        answer: {
+            a: "response.write('Hello World')",
+            b: "'Hello World'",
+            c: "document.write('Hello World')",
+            d: "('Hello World')"
+        },
+        correctAnswer: "c"
+    },
+    {
+        question: "Where is the correct place to insert a JavaScript?",
+        answer: {
+            a: "Both the <head> section and the <body> section are correct",
+            b: "The <body> section",
+            c: "The <head> section",
+            d: "The <footer> section"
+        },
+        correctAnswer: "a"
     },
     {
         question: "What is the correct syntax for referring to an external script called 'xxx.js'?",
-        answer: [
-            {text: "a) <script src='xxx.js'>",correct: true},
-            {text: "b) <script name='xxx.js'>",correct: false},
-            {text: "c) <script href='xxx.js'>",correct: false},
-            {text: "d) <script value='xxx.js'>",correct: false},
-        ]
+        answer: {
+            a: "<script src='xxx.js'>",
+            b: "<script name='xxx.js'>",
+            c: "<script href='xxx.js'>",
+            d: "<script 'xxx.js'>"
+        },
+        correctAnswer: "a"
     },
-    {
-        question: "How do you call a function named 'myFunction'?",
-        answer: [
-            {text: "a) call myFunction()",correct: false},
-            {text: "b) myFunction()",correct: true},
-            {text: "c) call function myFunction",correct: false},
-            {text: "d) Call.myFunction()",correct: false},
-        ]
-    },
-    {
-        question: "How do you create a function?",
-        answer: [
-            {text: "a) function:myFunction()",correct: false},
-            {text: "b) function=myFunction()",correct: false},
-            {text: "c) function myFunction()",correct: true},
-            {text: "d) myFunction():function",correct: false},
-        ]
-    }
 ]
