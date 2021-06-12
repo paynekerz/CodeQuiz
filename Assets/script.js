@@ -4,31 +4,34 @@ const quizContainerEl = document.getElementById("quiz-container")
 const timerContainerEl = document.getElementById("timer-container")
 const questionEl = document.getElementById("questions")
 const answerBtnEl = document.getElementById("li-btn")
+const nameEl = document.getElementById("name-entry")
+const highscoreEl = document.getElementById("highscores")
+const finalScore = document.getElementById("score")
+const submitBtn = document.getElementById("submit-btn")
+
+
 startBtn.addEventListener("click", startQuiz)
+submitBtn.addEventListener("click", showBoard)
 
 //var for timer 
 var timerElement= document.querySelector(".timer-count");
 var timer, timerCount;
 var quizDone = false
-
+var questionIndex= 0;
 
 var score;
-let questionShuffle, currentQuestion;
+var highscore= [];
 
 //timer
 function quizTimer() {
     timer= setInterval(function(){
         timerCount--;
         timerElement.textContent = timerCount;
-        if(timerCount >= 0){
             //test if quiz is finished
-            if (quizDone && timerCount > 0) {
+            if (quizDone || timerCount <= 0) {
                 clearInterval(timer);
+                quizEnd();
             }
-        }
-        if (timerCount === 0) {
-            clearInterval(timer);
-        }
     }, 1000);
 }
 
@@ -37,66 +40,107 @@ function startQuiz() {
     scoreBtn.classList.add("hidden")
     quizContainerEl.classList.remove("hidden")
     timerContainerEl.classList.remove("hidden")
-    questionShuffle = questions
-    currentQuestion = 0
     quizDone = false
-    timerCount = 90
+    timerCount = 60
     score = 0
     quizTimer()
-    nextQuestion()
+    displayQuestion()
 }
 
-function nextQuestion() {
-    displayQuestion(questionShuffle[currentQuestion])
-}
-
-function displayQuestion(questions) {
+function displayQuestion() {
     //pulls questions from the array
-    questionEl.innerText = questions.question
-    
+    questionEl.innerText = questions[questionIndex].question
+    //removes the previous question
+    document.querySelector("#choices").innerHTML = ""
+    questions[questionIndex].answer.forEach(function(item){
+        var button = document.createElement("button")
+        button.innerText = item
+        button.setAttribute("class", "btn")
+        button.addEventListener("click", checkAnswer)
+        document.querySelector("#choices").appendChild(button)
+    })
+}
 
+function checkAnswer(event){
+    var answer = event.target.textContent
+    if (answer === questions[questionIndex].correctAnswer){
+        score += 25
+    }
+    else {
+        timerCount -= 20
+    }
+    questionIndex++
+    if (questionIndex === questions.length){
+        quizDone = true;
+        quizEnd()
+    }
+    else {
+        displayQuestion()
+    }
+}
+
+function quizEnd(){
+    quizContainerEl.classList.add("hidden")
+    timerContainerEl.classList.add("hidden")
+    nameEl.classList.remove("hidden")
+    finalScore.innerText = "Your Score: " + score
+}
+
+function showBoard(){
+    var name = document.getElementById("nametag").value
+    var entry = name + " " + score
+    nameEl.classList.add("hidden")
+    //if storage is empty then it save an empty array
+    if(localStorage.getItem("scoreBoard") == null){
+        localStorage.setItem("scoreBoard", "[]")
+    }
+    var oldHighscores = JSON.parse.localStorage.getItem("scoreBoard");
+    oldHighscores.push(entry)
+
+    localStorage.setItem("scoreBoard", JSON.stringify(oldHighscores));
+    
 }
 
 //array for the questions 
 const questions = [
     {
         question: "Inside which HTML element do we put the JavaScript?",
-        answer: {
-            a: "<javascript>",
-            b: "<js>",
-            c: "<script>",
-            d: "<scripting>"
-        },
-        correctAnswer: "c"
+        answer: [
+             "<javascript>",
+             "<js>",
+             "<script>",
+             "<scripting>"
+        ],
+        correctAnswer: "<script>"
     },
     {
         question: "What is the correct JavaScript syntax to write 'Hello World'?",
-        answer: {
-            a: "response.write('Hello World')",
-            b: "'Hello World'",
-            c: "document.write('Hello World')",
-            d: "('Hello World')"
-        },
-        correctAnswer: "c"
+        answer: [
+             "response.write('Hello World')",
+             "'Hello World'",
+             "document.write('Hello World')",
+             "('Hello World')"
+        ],
+        correctAnswer: "document.write('Hello World')"
     },
     {
         question: "Where is the correct place to insert a JavaScript?",
-        answer: {
-            a: "Both the <head> section and the <body> section are correct",
-            b: "The <body> section",
-            c: "The <head> section",
-            d: "The <footer> section"
-        },
-        correctAnswer: "a"
+        answer: [
+             "Both the <head> section and the <body> section are correct",
+             "The <body> section",
+             "The <head> section",
+             "The <footer> section"
+        ],
+        correctAnswer: "Both the <head> section and the <body> section are correct"
     },
     {
         question: "What is the correct syntax for referring to an external script called 'xxx.js'?",
-        answer: {
-            a: "<script src='xxx.js'>",
-            b: "<script name='xxx.js'>",
-            c: "<script href='xxx.js'>",
-            d: "<script 'xxx.js'>"
-        },
-        correctAnswer: "a"
+        answer: [
+             "<script src='xxx.js'>",
+             "<script name='xxx.js'>",
+             "<script href='xxx.js'>",
+             "<script 'xxx.js'>"
+        ],
+        correctAnswer: "<script src='xxx.js'>"
     },
 ]
