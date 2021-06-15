@@ -11,7 +11,8 @@ const submitBtn = document.getElementById("submit-btn")
 
 
 startBtn.addEventListener("click", startQuiz)
-submitBtn.addEventListener("click", showBoard)
+submitBtn.addEventListener("click", saveHighscore)
+scoreBtn.addEventListener("click", showBoard)
 
 //var for timer 
 var timerElement= document.querySelector(".timer-count");
@@ -20,7 +21,7 @@ var quizDone = false
 var questionIndex= 0;
 
 var score;
-var highscore= [];
+var highscores= JSON.parse(localStorage.getItem("scoreBoard")) || [];
 
 //timer
 function quizTimer() {
@@ -84,21 +85,26 @@ function quizEnd(){
     timerContainerEl.classList.add("hidden")
     nameEl.classList.remove("hidden")
     finalScore.innerText = "Your Score: " + score
+    showBoard()
 }
 
 function showBoard(){
-    var name = document.getElementById("nametag").value
-    var entry = name + " " + score
-    nameEl.classList.add("hidden")
-    //if storage is empty then it save an empty array
-    if(localStorage.getItem("scoreBoard") == null){
-        localStorage.setItem("scoreBoard", "[]")
-    }
-    var oldHighscores = JSON.parse.localStorage.getItem("scoreBoard");
-    oldHighscores.push(entry)
+    highscoreEl.classList.remove("hidden")
+  highscores.sort(function(a, b){return b.score - a.score})
+  document.getElementById("highscores").innerHTML = ""
+  highscores.forEach(function (foo){
+    var newScore = document.createElement("li")
+    newScore.textContent = foo.name + " " + foo.score
+    document.getElementById("highscores").appendChild(newScore)
+  })
+}
 
-    localStorage.setItem("scoreBoard", JSON.stringify(oldHighscores));
-    
+function saveHighscore(){
+    var name = document.getElementById("nametag").value
+    var entry = {name, score}
+    highscores.push(entry)
+    localStorage.setItem("scoreBoard", JSON.stringify(highscores));
+    showBoard();
 }
 
 //array for the questions 
